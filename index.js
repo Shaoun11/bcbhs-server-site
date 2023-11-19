@@ -36,27 +36,31 @@ async function run() {
       
  const bcbhsCollection = client.db("bcbhs").collection("userData");
 
-
-    await client.connect();
       // Send a ping to confirm a successful connection
        app.post("/userData", async (req, res) => {
          const addData = req.body;
-
+        
          const result = await bcbhsCollection.insertOne(addData);
-         console.log(result);
          res.send(result);
+         console.log(result);
        });
 
 
+       app.get("/userData", async (req, res) => {
+        const result = await bcbhsCollection.find().toArray();
+        res.send(result);
+      });
+ 
+  
 
-    await client.db("admin").command({ ping: 1 });
+   client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
       
       
    
-      
+       
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
